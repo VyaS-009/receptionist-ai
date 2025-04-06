@@ -36,35 +36,31 @@ The assistant integrates voice capabilities with cutting-edge AI models, enablin
 ---
 
 ## 🧱 System Architecture
-
 ```mermaid
-graph TD
-  A[Incoming Call (Twilio)] --> B[FastAPI Webhook]
-  B --> C[Speech-to-Text (Whisper API)]
-  C --> D[Intent Detection (LLM: GPT-4/Gemini)]
-  D --> E{Is Intent = Booking?}
-
-  E -- Yes --> F[Extract Details (Date, Time, Name)]
-  F --> G[Check Availability (Google Calendar API)]
-  G --> H[Book Appointment]
-  H --> I[Generate Confirmation Response]
-  E -- No --> J[Generate Fallback/FAQ Response]
-
-  I --> K[Text-to-Speech (ElevenLabs)]
+flowchart TD
+  A(Incoming Call\nTwilio) --> B(FastAPI Webhook)
+  B --> C(Speech-to-Text\nWhisper API)
+  C --> D(Intent Detection\nLLM: GPT-4/Gemini)
+  D --> E{Is Intent\nBooking?}
+  E -- Yes --> F(Extract Details\nDate, Time, Name)
+  F --> G(Check Availability\nGoogle Calendar API)
+  G --> H(Book Appointment)
+  H --> I(Generate Confirmation\nResponse)
+  E -- No --> J(Generate Fallback/\nFAQ Response)
+  I --> K(Text-to-Speech\nElevenLabs)
   J --> K
-
-  K --> L[Send Voice Back to Twilio (Playback)]
-
-  D --> M[Log Transcripts to MongoDB]
+  K --> L(Send Voice Back to\nTwilio Playback)
+  D --> M[(Log Transcripts\nto MongoDB)]
   H --> M
   J --> M
-
-  subgraph Admin Dashboard (Next.js + ShadCN)
-    N[Real-time Logs Viewer]
-    O[Appointments Table]
-    P[Transcript Viewer]
+  
+  subgraph Admin Dashboard
+    N(Real-time Logs\nViewer)
+    O(Appointments\nTable)
+    P(Transcript\nViewer)
   end
-
+  
   M --> N
   M --> O
   M --> P
+```
